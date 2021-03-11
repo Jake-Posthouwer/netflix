@@ -1,0 +1,25 @@
+.nav-wrapper {
+    width: 100%;
+
+    img {
+        margin-top: calc(68px /2 /2 + 5px);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    height: 68px;
+    padding: 0 4%;
+
+    li {
+        a {
+            font-size: 14px;
+            color: #e5e5e5;
+
+            &:hover {
+                color: #b3b3b3;
+            }
+        }
+    }
+}

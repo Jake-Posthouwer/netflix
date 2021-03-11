@@ -1,19 +1,26 @@
 import React from 'react';
 import { link, NavLink } from 'react-router-dom';
 
+import logo from '../../img/Netflix.svg';
+
 const NavBar = () => {
     return (
-        <nav className="nav-wrapper red darken-3">
-            <div className="container">
-                <a className="brand-logo left">netflix</a>
-                <ul className="right">
-                    <li><NavLink to="/">home</NavLink></li>
-                    <li><NavLink to="/series">series</NavLink></li>
-                    <li><NavLink to="/films">films</NavLink></li>
-                    <li><NavLink to="/newandpopular">new and popular</NavLink></li>
-                    <li><NavLink to="/mylist">my list</NavLink></li>
-                </ul>
-            </div>
+        <nav className="nav-wrapper valign-wrapper green darken-3">
+            <NavLink to="/" className="brand-logo left"><img src={logo} alt="netflix logo"/></NavLink>
+            
+            <ul className="nav-bar">
+                <li><NavLink to="/">Home</NavLink></li>
+                <li><NavLink to="/series">Series</NavLink></li>
+                <li><NavLink to="/films">Films</NavLink></li>
+                <li><NavLink to="/newandpopular">New &#38; popular</NavLink></li>
+                <li><NavLink to="/mylist">My list</NavLink></li>
+            </ul>
+
+            <ul className="right">
+                <li><span className="material-icons">search</span></li>
+                <li><span className="material-icons">card_giftcard</span></li>
+                <li><span className="material-icons">notifications</span></li>
+            </ul>
         </nav>
     )
 }
