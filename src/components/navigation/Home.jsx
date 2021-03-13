@@ -1,25 +1,35 @@
 import React from 'react';
+import List from '../util/list';
+import API from '../api';
 
-const Home = () => {
-    return (
-        <div className="container">
-            <div className="left">
-                <h4>home</h4>
-                <div className="left">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis impedit
-                        rerum alias consectetur ut eaque provident, temporibus ex eveniet enim eius
-                        officiis quae nisi, a ad! Amet modi consectetur soluta corporis, aut
-                        consequuntur perferendis! Aliquam id tempore odit magni necessitatibus ipsam
-                        beatae, incidunt tempora. Beatae tempora laborum earum iusto atque iste
-                        repudiandae omnis neque sit? Voluptas enim doloribus, in dolores velit quo
-                        dolore sunt, repudiandae quod odit fugiat quasi tempora quis. Voluptates minima
-                        consequatur laboriosam atque, aliquid labore animi sequi mollitia dolore
-                        accusamus, est, neque enim delectus vero fuga repudiandae eum. Repellat nulla
-                        nam dignissimos aperiam. Accusamus perspiciatis ullam accusantium!</p>
-                </div>
+
+class Home extends React.Component {
+    state = {}
+
+    constructor() {
+        super()
+        var api = new API()
+        var arr = []
+        var testMovies = [110, 120] // TEST MOVIE ID
+
+        for (let i = 0; i < testMovies.length; i++) {
+            const movie = testMovies[i];
+            api.getMovie(movie).then((data) => {
+                arr.push(data)
+                this.forceUpdate()
+            })
+        }
+
+
+        this.state.movies = arr
+    }
+    render() {
+        return (
+            <div>
+                <List data={this.state.movies} />
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default Home;

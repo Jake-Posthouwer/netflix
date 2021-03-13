@@ -1,0 +1,74 @@
+.movie {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+    background-image: url("https://image.tmdb.org/t/p/original/tY6zVyt0OubPgCapbXFJLKhQqSu.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+
+    & img {
+        position: absolute;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+
+        object-fit: cover;
+        object-position: center;
+
+        z-index: 1;
+    }
+
+    & h2 {
+        margin: 0;
+        display: inline-block;
+
+        position: absolute;
+        top: 50%;
+        left: 100px;
+        font-weight: bold;
+        letter-spacing: 10px;
+        width: 50%;
+        transform: translateY(-50%);
+    }
+
+    & p {
+        position: absolute;
+        top: 60%;
+        left: 100px;
+        width: 20%;
+    }
+
+    & .slider {
+        height: auto;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        & .right,
+        & .left {
+            height: 100vh;
+            cursor: pointer;
+            background-image: none;
+            transition: background-image 0.5s ease-in-out;
+
+            &.right:hover {
+                background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1));
+            }
+
+            &.left:hover {
+                background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1));
+            }
+        }
+
+        & span {
+            margin-top: calc(50vh - 5vh);
+            font-size: 50px;
+        }
+    }
+
+    & * {
+        position: relative;
+        z-index: 3;
+    }
+}

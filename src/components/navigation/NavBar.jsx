@@ -5,8 +5,8 @@ import logo from '../../img/Netflix.svg';
 
 const NavBar = () => {
     return (
-        <nav className="nav-wrapper valign-wrapper green darken-3">
-            <NavLink to="/" className="brand-logo left"><img src={logo} alt="netflix logo"/></NavLink>
+        <nav className="nav-wrapper valign-wrapper">
+            <NavLink to="/" className="left"><img src={logo} alt="netflix logo"/></NavLink>
             
             <ul className="nav-bar">
                 <li><NavLink to="/">Home</NavLink></li>
@@ -16,7 +16,7 @@ const NavBar = () => {
                 <li><NavLink to="/mylist">My list</NavLink></li>
             </ul>
 
-            <ul className="right">
+            <ul className="options right">
                 <li><span className="material-icons">search</span></li>
                 <li><span className="material-icons">card_giftcard</span></li>
                 <li><span className="material-icons">notifications</span></li>

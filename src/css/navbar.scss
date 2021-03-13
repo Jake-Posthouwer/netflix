@@ -1,9 +1,21 @@
 .nav-wrapper {
     width: 100%;
+    position: fixed;
+    background: transparent;
+
+    box-shadow: none;
+
+    z-index: 100;
+
+    &>a {
+        margin-top: calc(68px /2 /2 + 5px);
+        height: 50px;
+        width: 150px;
+    }
 
     img {
-        margin-top: calc(68px /2 /2 + 5px);
-
+        height: 50px;
+        width: 150px;
         &:hover {
             cursor: pointer;
         }
@@ -11,6 +23,49 @@
 
     height: 68px;
     padding: 0 4%;
+
+    & .nav-bar {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 0;
+
+        & a {
+            transition: transform .3s ease-in-out;
+            background: none;
+            color: white;
+
+            height: 30px;
+            line-height: 30px;
+
+            mix-blend-mode: exclusion;
+
+            border-radius: 15px;
+
+            &:hover {
+                background: transparent;
+                color: white;
+            }
+        }
+    }
+
+    & .options {
+        position: absolute;
+        right: 0;
+        margin-right: 4%;
+
+        & li {
+            line-height: 100%;
+            &:not(:last-of-type) {
+                margin-right: 10px;
+            }
+        }
+
+        & span {
+            font-size: 30px;
+            cursor: pointer;
+        }
+    }
 
     li {
         a {
