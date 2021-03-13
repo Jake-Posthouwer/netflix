@@ -1,14 +1,19 @@
 .nav-wrapper {
+    // &>* {
+    //     margin-top: 10px;
+    // }
+
     width: 100%;
     position: fixed;
-    background: transparent;
-
+    background: rgb(0, 0, 0);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 1) -30%, rgba(0, 0, 0, 0) 100%);
     box-shadow: none;
 
+    line-height: 100%;
+    box-shadow: none;
     z-index: 100;
 
     &>a {
-        margin-top: calc(68px /2 /2 + 5px);
         height: 50px;
         width: 150px;
     }
@@ -31,9 +36,10 @@
         margin-left: 0;
 
         & a {
-            transition: transform .3s ease-in-out;
+            transition: all .5s ease-in-out;
             background: none;
-            color: white;
+            color: #e5e5e5;
+            font-size: 15px;
 
             height: 30px;
             line-height: 30px;
@@ -45,6 +51,7 @@
             &:hover {
                 background: transparent;
                 color: white;
+                transform: scale(1.1);
             }
         }
     }
@@ -57,13 +64,18 @@
         & li {
             line-height: 100%;
             &:not(:last-of-type) {
-                margin-right: 10px;
+                margin-right: 20px;
             }
         }
 
         & span {
-            font-size: 30px;
+            font-size: 25px;
             cursor: pointer;
+            transition: all .5s;
+
+            &:hover {
+                transform: scale(1.2);
+            }
         }
     }
 

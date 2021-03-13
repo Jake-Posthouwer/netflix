@@ -1,0 +1,8 @@
+footer {
+    display: grid !important;
+    grid-template-columns: auto auto auto;
+
+    & * {
+        text-align: center;
+    }
+}

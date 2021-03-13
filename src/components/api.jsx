@@ -1,23 +1,27 @@
+/**
+ * @file
+ * API connection with "The Movie Database"
+ */
+
+
 import axios from "axios";
-import dotenv from "dotenv";
 
 class API {
     state = {
         "BASE": {
-            "API": "https://api.themoviedb.org/3/movie/",
+            "API": `https://api.themoviedb.org/`,
             "IMG": "https://image.tmdb.org/t/p/original"
         },
         "KEY": process.env.REACT_APP_API_KEY,
-        "LANG": "en-US"
+        "LANG": "en-US",
+        "VERSION": 3
     }
 
-    constructor() {
-    }
-
-    build(url, lang = this.state.LANG) {
+    build(url, type="movie", params={}, includeBase = true, lang = this.state.LANG) {
         const param = {
             "api_key": this.state.KEY,
-            "language": lang
+            "language": lang,
+            ...params
         }
 
         var str = url,
@@ -31,12 +35,16 @@ class API {
             o++
         }
 
+        if (includeBase) {
+            str = this.state.BASE.API + this.state.VERSION + "/" + type + "/" + str
+        }
+
         return str
     }
 
     /**
      * Get image url
-     * @param {string} link - The .png you want
+     * @param {string} link The image you want
      * @returns {string} Full link
      */
     getImage(link) {
@@ -47,11 +55,11 @@ class API {
 
     /**
      * Get a certain movie
-     * @param {string} id - The ID of the movie
+     * @param {string} id The ID of the movie
      * @returns {object} Result object
      */
     async getMovie(id) {
-        const response = await axios.get(this.build(this.state.BASE.API + id))
+        const response = await axios.get(this.build(id))
 
         var data = response.data
 
@@ -65,9 +73,21 @@ class API {
     }
 
     /**
+     * Get movies of certain type
+     * @param {object} params Add any requested types
+     * @see [here](https://developers.themoviedb.org/3/discover/movie-discover) for more information
+     * @returns 
+     */
+    async getMovies(params) {
+        const response = await axios.get(this.build("movie", "discover", params))
+
+        return response.data.results
+    }
+
+    /**
      * ! VERY UNSTABLE (XML Not found error)
      * Get random movies
-     * @param {int} amount - Amount of movies that will be returned
+     * @param {int} amount Amount of movies that will be returned
      * @returns {array} Results array
      */
     async getRandomMovies(amount=10) {
@@ -97,12 +117,24 @@ class API {
 
     /**
      * Get the popular movies right now
+     * @see [here](https://developers.themoviedb.org/3/movies/get-popular-movies) for more information
      * @returns {object} Results array
      */
     async getPopularMovies() {
-        const response = await axios.get(this.build(this.state.BASE.API + "popular"))
+        const response = await axios.get(this.build("popular"))
 
         return response.data.results
+    }
+
+    /**
+     * Get the available genres
+     * @see [here](https://developers.themoviedb.org/3/genres/get-movie-list) for more information
+     * @returns {array} Genres available
+     */
+    async getGenres() {
+        const response = await axios.get(this.build("list", "genre/movie"))
+
+        return response.data.genres
     }
 }
  
