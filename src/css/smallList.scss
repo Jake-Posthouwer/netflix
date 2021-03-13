@@ -2,7 +2,6 @@
     padding-left: calc(100px - 7px);
     display: flex;
     overflow-x: scroll;
-    position: relative;
 
     &::-webkit-scrollbar {
         display: none;
@@ -43,7 +42,7 @@
             & span {
                 position: absolute;
                 top: 50%;
-                transform: translateY(-50%);
+                transform: translateY(-100%);
                 font-size: 25px;
                 z-index: 10;
 
@@ -99,6 +98,7 @@
 
 .genre {
     overflow: hidden;
+    position: relative;
 
     h5 {
         margin-left: 100px;
