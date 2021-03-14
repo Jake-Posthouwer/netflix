@@ -42,6 +42,72 @@ class API {
         return str
     }
 
+    ajust(arr = []) {
+        var items = arr
+        var oneItem = false
+        if (items[0] == null) {
+            items = [items]
+            oneItem = true
+        }
+
+        var change = {
+            "backdrop_path": {
+                replace: "backdrop",
+                img: true
+            },
+            "poster_path": {
+                replace: "poster",
+                img: true
+            },
+            "original_language": {
+                replace: "language"
+            },
+            "original_title": {
+                delete: true
+            },
+            "vote": {
+                object: true,
+                delete: false,
+                items: ["vote_average", "vote_count"],
+                to: ["average", "count"]
+            }
+        }
+        
+        for (let i = 0; i < items.length; i++) {
+            const data = items[i];
+
+            for (const key in change) {
+                const obj = change[key]
+                if (obj.replace) {
+                    items[i][obj.replace] = (obj.img) ? this.getImage(data[key]) : data[key]
+                }
+
+                if (obj.object == true) {
+                    var o = {}
+
+                    for (let j = 0; j < obj.items.length; j++) {
+                        const item = obj.items[j];
+                        var name = obj.to[j] || obj.items[j];
+                        o[name] = items[i][item] || null
+                        delete items[i][item]
+                    }
+
+                    items[i][key] = o
+                }
+
+                if (obj.delete == null || obj.delete == true) {
+                    delete items[i][key]
+                }
+            }
+        }
+
+        if (oneItem) {
+            return items[0]
+        } else {
+            return items
+        }
+    }
+
     /**
      * Get image url
      * @param {string} link The image you want
@@ -65,11 +131,7 @@ class API {
 
         if (data.success == false) return false
 
-        // * Make image path correct
-        data.backdrop_path = this.getImage(data.backdrop_path)
-        data.poster_path = this.getImage(data.poster_path)
-
-        return data
+        return this.ajust(data)
     }
 
     /**
@@ -81,7 +143,7 @@ class API {
     async getMovies(params) {
         const response = await axios.get(this.build("movie", "discover", params))
 
-        return response.data.results
+        return this.ajust(response.data.results)
     }
 
     /**
@@ -112,7 +174,7 @@ class API {
             })
         }
 
-        return data
+        return this.ajust(data)
     }
 
     /**
@@ -123,7 +185,7 @@ class API {
     async getPopularMovies() {
         const response = await axios.get(this.build("popular"))
 
-        return response.data.results
+        return this.ajust(response.data.results)
     }
 
     /**

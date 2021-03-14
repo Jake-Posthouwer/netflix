@@ -5,7 +5,15 @@ class List extends React.Component {
 
     constructor({ data, featured=false, api, className="" }) {
         super()
-        this.state = { list: data, i: 0, featured, api, parentClass: className}
+        this.ref = React.createRef();
+        this.state = {
+            list: data,
+            i: 0,
+            featured,
+            api,
+            parentClass: className,
+            isScrolling: false, clientX: 0
+        }
     }
 
     back() {
@@ -27,19 +35,41 @@ class List extends React.Component {
 
         if (type == "left") {
             slider.scrollTo({
-                left: slider.scrollLeft - 500,
+                left: slider.scrollLeft - 1600,
                 behavior: "smooth"
             })
         } else {
             slider.scrollTo({
-                left: slider.scrollLeft + 500,
+                left: slider.scrollLeft + 1600,
                 behavior: "smooth"
             })
+        }
+
+    }
+
+    // * Drag feature * //
+    onMouseDown(e) {
+        this.setState({
+            ...this.state, isScrolling: true,clientX: e.clientX
+        });
+    }
+
+    onMouseUp() {
+        this.setState({ ...this.state, isScrolling: false });
+    }
+
+    onMouseDrag(e) {
+        const { clientX } = this.state;
+
+        if (this.state.isScrolling) {
+            var x = this.ref.current.scrollLeft - e.clientX + clientX
+            this.ref.current.scrollLeft = x;
+            this.state.clientX = e.clientX;
         }
     }
 
     render() {
-        var api = this.state.api
+        var { api } = this.state
         
         if (this.state.featured == true) {
             var e = this.state.list[this.state.i]
@@ -50,7 +80,7 @@ class List extends React.Component {
                 multiple = true
             }
             return (
-                <div className={["movie",this.state.parentClass].join(" ")} style={{ backgroundImage: `url("${e.backdrop_path}")` }}>
+                <div className={["movie",this.state.parentClass].join(" ")} style={{ backgroundImage: `url("${e.backdrop}")` }}>
                     <h2>{e.title}</h2>
                     <p>{e.overview}</p>
                     {multiple ? (
@@ -69,11 +99,11 @@ class List extends React.Component {
             }
 
             return (
-                <div className={["list", this.state.parentClass].join(" ")}>
+                <div ref={this.ref} className={["list", this.state.parentClass].join(" ")} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDrag.bind(this)} onMouseUp={this.onMouseUp.bind(this)}>
                     {(this.state.list) ? this.state.list.map((v, i) => {
                         return (
                             <div className="movie" data-id={v.id}>
-                                <img src={api.getImage(v.backdrop_path)} alt="" />
+                                <img src={v.backdrop} alt="" />
                                 <h5>{v.title}</h5>
                             </div>
                         )

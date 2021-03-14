@@ -11,8 +11,10 @@ class Home extends React.Component {
         var api = new API()
 
         this.state.api = api
-        this.featuredMovies([110, 120])
+        
+        this.featuredMovies([110])
         this.getGenre("Horror")
+        this.getGenre("Action")
 
         setTimeout(() => {
             this.forceUpdate()
@@ -58,6 +60,10 @@ class Home extends React.Component {
                 <div className="genre">
                     <h5>Horror</h5>
                     {(this.state.Horror) ? <List data={this.state.Horror} className="small" featured={false} api={this.state.api} /> : ""}
+                </div>
+                <div className="genre">
+                    <h5>Action</h5>
+                    {(this.state.Action) ? <List data={this.state.Action} className="small" featured={false} api={this.state.api} /> : ""}
                 </div>
             </div>
         )
