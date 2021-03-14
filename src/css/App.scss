@@ -14,6 +14,12 @@ body {
     transition: all .5s;
 }
 
+a {
+    color: inherit !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+
 /* fallback */
 @font-face {
     font-family: 'Material Icons';

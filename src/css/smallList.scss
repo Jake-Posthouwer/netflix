@@ -29,16 +29,6 @@
                 left: 20px;
             }
 
-            &.right:hover {
-                background: rgb(0, 0, 0);
-                background: linear-gradient(270deg, rgba(0, 0, 0, 0.5676645658263305) 0%, rgba(0, 0, 0, 0) 100%);
-            }
-
-            &.left:hover {
-                background: rgb(0, 0, 0);
-                background: linear-gradient(90deg, rgba(0, 0, 0, 0.5676645658263305) 0%, rgba(0, 0, 0, 0) 100%);
-            }
-
             & span {
                 position: absolute;
                 top: 50%;

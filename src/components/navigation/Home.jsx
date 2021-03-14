@@ -15,6 +15,7 @@ class Home extends React.Component {
         this.featuredMovies([110])
         this.getGenre("Horror")
         this.getGenre("Action")
+        this.getGenre("War")
 
         setTimeout(() => {
             this.forceUpdate()
@@ -64,6 +65,10 @@ class Home extends React.Component {
                 <div className="genre">
                     <h5>Action</h5>
                     {(this.state.Action) ? <List data={this.state.Action} className="small" featured={false} api={this.state.api} /> : ""}
+                </div>
+                <div className="genre">
+                    <h5>War</h5>
+                    {(this.state["War"]) ? <List data={this.state["War"]} className="small" featured={false} api={this.state.api} /> : ""}
                 </div>
             </div>
         )
