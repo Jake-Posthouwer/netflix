@@ -1,4 +1,5 @@
 .list {
+    position: relative;
     padding-left: calc(100px - 7px);
     display: flex;
     overflow-x: scroll;
@@ -49,19 +50,12 @@
     }
 
     & .movie {
+        position: relative;
         padding: 0 7px;
 
         flex: 0 0 19.7%;
-        position: relative;
         cursor: pointer;
         z-index: 3;
-
-        &:hover {
-            & h5 {
-                opacity: 1;
-            }
-        }
-
 
         & img {
             width: 100%;
@@ -69,8 +63,62 @@
             pointer-events: none;
         }
 
+        & .hidden {
+
+            background-color: gray;
+            height: 300px;
+            overflow: visible;
+
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            margin-top: -5px;
+
+            //display: none;
+
+            padding: 0 20px;
+            padding-top: 20px;
+
+            & .buttons {
+                width: 100%;
+                display: block;
+                height: 35px;
+
+                & .smallbutton {
+                    border: 1px solid white;
+                    margin-right: 10px;
+                    border-radius: 50px;
+
+                    &:last-of-type {
+                        float: right;
+                    }
+
+                    &.important {
+                        background-color: white;
+                        color: black;
+                    }
+                }
+
+                .match {
+                    color: #46d369;
+                }
+            }
+
+            &>p {
+                display: block;
+                margin-bottom: 0;
+            }
+
+            & .rating {
+                & * {
+                    display: inline-block;
+                    margin-right: 10px;
+                    margin-top: 0;
+                }
+            }
+        }
+
         & h5 {
-            z-index: 3;
+            z-index: 5;
             margin: 0;
             padding: 0;
             font-size: 20px;
@@ -80,7 +128,8 @@
 
             position: absolute;
             top: 50%;
-            width: auto;
+            width: 100%;
+            text-align: center;
             left: 50%;
             transform: translate(-50%, -50%);
         }
@@ -90,6 +139,11 @@
 .genre {
     overflow: hidden;
     position: relative;
+
+    &.first {
+        margin-top: -10vh;
+        z-index: 10;
+    }
 
     h5 {
         margin-left: 100px;

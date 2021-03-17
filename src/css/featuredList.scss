@@ -3,9 +3,15 @@
     width: 100vw;
     height: 100vh;
 
-    background-image: url("https://image.tmdb.org/t/p/original/tY6zVyt0OubPgCapbXFJLKhQqSu.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
+    & .liniar-gradient {
+        width: 100vw;
+        height: 20vh;
+        background: linear-gradient(0deg, rgba(20, 20, 20, 1) 0%, rgba(20, 20, 20, 0) 100%);
+        z-index: 4;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
 
     & img {
         position: absolute;
@@ -30,13 +36,6 @@
         letter-spacing: 10px;
         width: 50%;
         transform: translateY(-50%);
-    }
-
-    & p {
-        position: absolute;
-        top: 60%;
-        left: 100px;
-        width: 20%;
     }
 
     & .slider {

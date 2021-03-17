@@ -147,8 +147,8 @@ class API {
     }
 
     /**
-     * ! VERY UNSTABLE (XML Not found error)
      * Get random movies
+     * @deprecated
      * @param {int} amount Amount of movies that will be returned
      * @returns {array} Results array
      */
@@ -175,6 +175,24 @@ class API {
         }
 
         return this.ajust(data)
+    }
+
+    async getVideos(id) {
+        const response = await axios.get(this.build("videos", `movie/${id}`))
+
+        return response.data.results
+    }
+
+    async getTrailer(id, type = "youtube") {
+        const response = await axios.get(this.build("videos", `movie/${id}`)),
+            data = response.data.results;
+
+        for (let i = 0; i < data.length; i++) {
+            const video = data[i];
+            if (video.site.toLowerCase() == type.toLowerCase()) {
+                return video
+            }
+        }
     }
 
     /**

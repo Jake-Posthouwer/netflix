@@ -1,6 +1,7 @@
 import React from 'react';
 import List from '../util/list';
 import API from '../api';
+import PopupMovie from '../popups/movie';
 
 
 class Home extends React.Component {
@@ -12,7 +13,7 @@ class Home extends React.Component {
 
         this.state.api = api
         
-        this.featuredMovies([110])
+        this.featuredMovies([587807])
         this.getGenre("Horror")
         this.getGenre("Action")
         this.getGenre("War")
@@ -20,6 +21,10 @@ class Home extends React.Component {
         setTimeout(() => {
             this.forceUpdate()
         }, 1000);
+    }
+
+    popup(data) {
+        this.setState({popup: data})
     }
 
     featuredMovies(movies) {
@@ -55,20 +60,21 @@ class Home extends React.Component {
     render() {
         return (
             <div>
+                {this.state.popup ? <div id="popups"><PopupMovie data={this.state.popup}/></div> : ""}
                 <div className="featured">
                     <List data={this.state.featured} featured={true} api={this.state.api} />
                 </div>
-                <div className="genre">
+                <div className="genre first">
                     <h5>Horror</h5>
-                    {(this.state.Horror) ? <List data={this.state.Horror} className="small" featured={false} api={this.state.api} /> : ""}
+                    {(this.state.Horror) ? <List data={this.state.Horror} popup={this.popup.bind(this)} className="small" featured={false} api={this.state.api} /> : ""}
                 </div>
                 <div className="genre">
                     <h5>Action</h5>
-                    {(this.state.Action) ? <List data={this.state.Action} className="small" featured={false} api={this.state.api} /> : ""}
+                    {(this.state.Action) ? <List data={this.state.Action} popup={this.popup.bind(this)} className="small" featured={false} api={this.state.api} /> : ""}
                 </div>
                 <div className="genre">
                     <h5>War</h5>
-                    {(this.state["War"]) ? <List data={this.state["War"]} className="small" featured={false} api={this.state.api} /> : ""}
+                    {(this.state["War"]) ? <List data={this.state["War"]} popup={this.popup.bind(this)} className="small" featured={false} api={this.state.api} /> : ""}
                 </div>
             </div>
         )

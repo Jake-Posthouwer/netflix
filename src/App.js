@@ -2,6 +2,7 @@ import React from "react";
 import './css/App.scss';
 import 'materialize-css/dist/css/materialize.min.css';
 import { BrowserRouter, Route } from 'react-router-dom';
+import firebase from 'firebase';
 
 import NavBar from './components/util/navbar';
 import Footer from './components/util/footer';

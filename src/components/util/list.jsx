@@ -1,17 +1,22 @@
 import React from 'react';
+import reactDom from 'react-dom';
+
 import API from '../api';
+
+import PopupMovie from '../popups/movie';
 
 class List extends React.Component {
 
-    constructor({ data, featured=false, api, className="" }) {
+    constructor({ data, featured=false, className="", popup }) {
         super()
         this.ref = React.createRef();
         this.state = {
             list: data,
             i: 0,
             featured,
-            api,
+            api: new API(),
             parentClass: className,
+            popup,
             isScrolling: false, clientX: 0
         }
     }
@@ -47,6 +52,37 @@ class List extends React.Component {
 
     }
 
+    onHover(e) {
+        var wait = setTimeout(async () => {
+            function getOffset(el) {
+                var _x = 0;
+                var _y = 0;
+                while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+                    _x += el.offsetLeft - el.scrollLeft;
+                    _y += el.offsetTop - el.scrollTop;
+                    el = el.offsetParent;
+                }
+                return { top: _y, left: _x };
+            }
+
+            var pos = getOffset(e.target)
+            var x = pos.left,
+                y = pos.top;
+
+            var data = await this.state.api.getMovie(e.target.dataset.id)
+            this.state.popup({x, y, data})
+        }, 250);
+        this.setState({wait})
+    }
+
+    onLeave() {
+        var { wait } = this.state
+        
+        clearTimeout(wait)
+
+        this.setState({wait: null})
+    }
+
     // * Drag feature * //
     onMouseDown(e) {
         this.setState({
@@ -69,8 +105,6 @@ class List extends React.Component {
     }
 
     render() {
-        var { api } = this.state
-        
         if (this.state.featured == true) {
             var e = this.state.list[this.state.i]
             if (e == null) return false;
@@ -80,9 +114,10 @@ class List extends React.Component {
                 multiple = true
             }
             return (
-                <div className={["movie",this.state.parentClass].join(" ")} style={{ backgroundImage: `url("${e.backdrop}")` }}>
+                <div className={["movie", this.state.parentClass].join(" ")}>
+                    <img src={e.backdrop} alt="featured film" />
+                    <div className="liniar-gradient"></div>
                     <h2>{e.title}</h2>
-                    <p>{e.overview}</p>
                     {multiple ? (
                         <div className="slider">
                             <div className="left" onClick={this.back.bind(this)}><span className="material-icons">navigate_before</span></div>
@@ -102,9 +137,8 @@ class List extends React.Component {
                 <div ref={this.ref} className={["list", this.state.parentClass].join(" ")} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDrag.bind(this)} onMouseUp={this.onMouseUp.bind(this)}>
                     {(this.state.list) ? this.state.list.map((v, i) => {
                         return (
-                            <div className="movie" data-id={v.id}>
+                            <div className="movie" data-id={v.id} key={i} onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.onLeave.bind(this)}>
                                 <img src={v.backdrop} alt="" />
-                                <h5>{v.title}</h5>
                             </div>
                         )
                     }) : ""}
