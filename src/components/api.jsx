@@ -163,7 +163,7 @@ class API {
 
             // * Make sure the movies aren't the same
             while(accepted.includes(random)) {
-                random == Math.round(Math.random() * (max - min + 1) + min)
+                random = Math.round(Math.random() * (max - min + 1) + min)
             }
 
             this.getMovie(random).then((d) => {
