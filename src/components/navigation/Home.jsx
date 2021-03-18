@@ -11,8 +11,8 @@ class Home extends React.Component {
 
         this.state.api = api
         
-        this.featuredMovies([587807])
-        this.getGenres(["Horror", "Action", "War"])
+        this.featuredMovies([530915])
+        this.getGenres(["Horror", "Action", "War", "Animation"])
 
         setTimeout(() => {
             this.forceUpdate()

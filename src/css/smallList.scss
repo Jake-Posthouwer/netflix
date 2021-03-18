@@ -1,5 +1,4 @@
 .list {
-    position: relative;
     padding-left: calc(100px - 7px);
     display: flex;
     overflow-x: scroll;
@@ -12,10 +11,11 @@
         position: absolute;
         left: 0;
         width: 100vw;
-        height: 100%;
+        height: 72%;
 
         & .right,
         & .left {
+            z-index: 500;
             height: 100%;
             cursor: pointer;
             background-image: none;
@@ -33,7 +33,7 @@
             & span {
                 position: absolute;
                 top: 50%;
-                transform: translateY(-100%);
+                transform: translateY(-50%);
                 font-size: 25px;
                 z-index: 10;
 

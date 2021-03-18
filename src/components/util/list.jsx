@@ -1,8 +1,7 @@
 import React from 'react';
-
 import API from '../api';
-
 import PopupMovie from '../popups/movie';
+import reactDOM from 'react-dom';
 
 class List extends React.Component {
 
@@ -34,16 +33,19 @@ class List extends React.Component {
     scroll(data) {
         var e = data.target,
             type = e.offsetParent.classList[0],
-            slider = e.offsetParent.offsetParent.parentElement
+            slider = e.offsetParent.offsetParent.parentElement,
+            scrollPX = 1000;
+        
+        reactDOM.render(<></>, document.getElementById("popups"))
 
         if (type == "left") {
             slider.scrollTo({
-                left: slider.scrollLeft - 1600,
+                left: slider.scrollLeft - scrollPX,
                 behavior: "smooth"
             })
         } else {
             slider.scrollTo({
-                left: slider.scrollLeft + 1600,
+                left: slider.scrollLeft + scrollPX,
                 behavior: "smooth"
             })
         }
@@ -52,25 +54,25 @@ class List extends React.Component {
 
     onHover(e) {
         var wait = setTimeout(async () => {
-            function getOffset(el) {
-                var _x = 0;
-                var _y = 0;
-                while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-                    _x += el.offsetLeft - el.scrollLeft;
-                    _y += el.offsetTop - el.scrollTop;
-                    el = el.offsetParent;
-                }
-                return { top: _y, left: _x };
+            var el = e.target,
+                doc = document.getElementsByClassName("App-content")[0],
+                boundingBox = el.getBoundingClientRect();
+
+            var clientTop = doc.clientTop || document.body.clientTop || 0,
+                clientLeft = doc.clientLeft || document.body.clientLeft || 0,
+                scrollTop = window.pageYOffset || document.body.scrollTop,
+                scrollLeft = window.pageXOffset || document.body.scrollLeft;
+
+            var x = boundingBox.left + scrollLeft - clientLeft,
+                y = boundingBox.top + scrollTop - clientTop,
+                data = await this.state.api.getMovie(e.target.dataset.id);
+            
+            if (screen.width >= 1600) {
+                x += screen.width / 100 * 2
             }
-
-            var pos = getOffset(e.target)
-            var x = pos.left,
-                y = pos.top;
-
-            var data = await this.state.api.getMovie(e.target.dataset.id)
-            // this.state.popup({ x, y, data })
+            
             new PopupMovie({x, y, data})
-        }, 250);
+        }, 1000);
         this.setState({wait})
     }
 
@@ -118,7 +120,15 @@ class List extends React.Component {
                     <div className="liniar-gradient"></div>
                     <div className="info">
                         <h2>{e.title}</h2>
-                        <button>Play</button>
+                        <p>{e.overview}</p>
+                        <button>
+                            <span className="material-icons playbtn">play_arrow</span>
+                            <span className="name">Play</span>
+                        </button>
+                        <button>
+                            <span className="material-icons playbtn">info</span>
+                            <span className="name">More Info</span>
+                        </button>
                     </div>
                     {multiple ? (
                         <div className="slider">
@@ -138,7 +148,7 @@ class List extends React.Component {
                     {(this.state.list) ? this.state.list.map((v, i) => {
                         return (
                             <div className="movie" data-id={v.id} key={i} onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.onLeave.bind(this)}>
-                                <img src={v.backdrop.toString()} alt="Movie about things" />
+                                <img src={v.backdrop || "./img/no-cover.jpg"} alt="Movie about things" />
                             </div>
                         )
                     }) : ""}
