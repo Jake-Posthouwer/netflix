@@ -3,7 +3,7 @@
     width: 100vw;
     height: 100vh;
 
-    & .liniar-gradient {
+    .liniar-gradient {
         width: 100vw;
         height: 20vh;
         background: linear-gradient(0deg, rgba(20, 20, 20, 1) 0%, rgba(20, 20, 20, 0) 100%);
@@ -13,7 +13,7 @@
         left: 0;
     }
 
-    & img {
+    img {
         position: absolute;
         top: 0;
         width: 100vw;
@@ -25,44 +25,63 @@
         z-index: 1;
     }
 
-    & h2 {
+    .info {
+        background-color: green;
+
         margin: 0;
-        display: inline-block;
+        padding: 0;
+        width: 50%;
 
         position: absolute;
         top: 50%;
         left: 100px;
-        font-weight: bold;
-        letter-spacing: 10px;
-        width: 50%;
         transform: translateY(-50%);
+        display: inline-block;
+
+        h2 {
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 15px 32px;
+            color: #000;
+            background-color: #fff;
+
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+
+            text-decoration: none;
+            display: inline-block;
+        }
     }
 
-    & .slider {
+    .slider {
         height: auto;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
 
-        & .right,
-        & .left {
+        .right,
+        .left {
             height: 100vh;
             cursor: pointer;
             background-image: none;
             transition: all .5s;
 
-            &.right:hover {
-                background: rgb(0,0,0);
-                background: linear-gradient(270deg, rgba(0,0,0,0.5676645658263305) 0%, rgba(0,0,0,0) 100%);
+            .right:hover {
+                background: rgb(0, 0, 0);
+                background: linear-gradient(270deg, rgba(0, 0, 0, 0.5676645658263305) 0%, rgba(0, 0, 0, 0) 100%);
             }
 
-            &.left:hover {
-                background: rgb(0,0,0);
-                background: linear-gradient(90deg, rgba(0,0,0,0.5676645658263305) 0%, rgba(0,0,0,0) 100%);
+            .left:hover {
+                background: rgb(0, 0, 0);
+                background: linear-gradient(90deg, rgba(0, 0, 0, 0.5676645658263305) 0%, rgba(0, 0, 0, 0) 100%);
             }
         }
 
-        & span {
+        span {
             margin-top: calc(50vh - 5vh);
             font-size: 50px;
         }

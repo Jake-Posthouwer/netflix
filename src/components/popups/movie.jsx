@@ -1,19 +1,21 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { render } from 'react-dom';
 
 class PopupMovie extends React.Component {
 
-    constructor({ data }) {
+    constructor({ x, y, data }) {
         super()
-        console.log(data);
-        this.state = { x: data.x, y: data.y, data: data.data }
-        console.log(this.state);
+        this.state = { x, y, data }
+        render(this.render(), document.getElementById("popups"))
     }
 
     delete(e) {
+        if (e.relatedTarget && e.relatedTarget.classList && e.relatedTarget.classList.contains("movie")) return
+
         var wait = setTimeout(() => {
-            // this.setState({ empty: true })
-        }, 250);
+            render(<></>, document.getElementById("popups"))
+            this.setState({ wait: null })
+        }, 1000);
 
         this.setState({wait})
     }
@@ -21,7 +23,7 @@ class PopupMovie extends React.Component {
     enter() {
         if (!this.state.wait) return
         clearTimeout(this.state.wait)
-        this.setState({wait: null})
+        this.setState({ wait: null })
     }
 
     render() {

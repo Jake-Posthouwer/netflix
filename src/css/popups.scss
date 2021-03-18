@@ -69,6 +69,11 @@
                     background-color: white;
                     border-color: white;
                     color: black;
+
+                    &:hover {
+                        background-color: #e6e6e6;
+                        border-color: #e6e6e6;
+                    }
                 }
             }
         }

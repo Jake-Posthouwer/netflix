@@ -1,11 +1,9 @@
 import React from 'react';
 import List from '../util/list';
 import API from '../api';
-import PopupMovie from '../popups/movie';
-
 
 class Home extends React.Component {
-    state = {featured: []}
+    state = {featured: [], genres: []}
 
     constructor() {
         super()
@@ -14,17 +12,11 @@ class Home extends React.Component {
         this.state.api = api
         
         this.featuredMovies([587807])
-        this.getGenre("Horror")
-        this.getGenre("Action")
-        this.getGenre("War")
+        this.getGenres(["Horror", "Action", "War"])
 
         setTimeout(() => {
             this.forceUpdate()
         }, 1000);
-    }
-
-    popup(data) {
-        this.setState({popup: data})
     }
 
     featuredMovies(movies) {
@@ -41,6 +33,13 @@ class Home extends React.Component {
         this.state.featured = arr
     }
 
+    async getGenres(array) {
+        for (let i = 0; i < array.length; i++) {
+            const genre = array[i];
+            await this.getGenre(genre)
+        }
+    }
+
     getGenre(genre) {
         var api = this.state.api
         var genreTitle = genre
@@ -50,7 +49,7 @@ class Home extends React.Component {
                 const genre = data[i];
                 if (genre.name == genreTitle) {
                     api.getMovies({ with_genres: genre.id }).then((data) => {
-                        this.state[genreTitle] = data
+                        this.state.genres.push({title: genreTitle, data})
                     })
                 }
             }
@@ -60,22 +59,19 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                {this.state.popup ? <div id="popups"><PopupMovie data={this.state.popup}/></div> : ""}
                 <div className="featured">
                     <List data={this.state.featured} featured={true} api={this.state.api} />
                 </div>
-                <div className="genre first">
-                    <h5>Horror</h5>
-                    {(this.state.Horror) ? <List data={this.state.Horror} popup={this.popup.bind(this)} className="small" featured={false} api={this.state.api} /> : ""}
-                </div>
-                <div className="genre">
-                    <h5>Action</h5>
-                    {(this.state.Action) ? <List data={this.state.Action} popup={this.popup.bind(this)} className="small" featured={false} api={this.state.api} /> : ""}
-                </div>
-                <div className="genre">
-                    <h5>War</h5>
-                    {(this.state["War"]) ? <List data={this.state["War"]} popup={this.popup.bind(this)} className="small" featured={false} api={this.state.api} /> : ""}
-                </div>
+                {
+                    this.state.genres.map((v, i) => {
+                        return (
+                            <div className={(i == 0) ? "genre first" : "genre"} key={i.toString()}>
+                                <h5>{v.title}</h5>
+                                <List data={v.data} className="small" featured={false} api={this.state.api}/>
+                            </div>
+                        )
+                    })
+                }
             </div>
         )
     }

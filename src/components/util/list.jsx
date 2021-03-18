@@ -1,5 +1,4 @@
 import React from 'react';
-import reactDom from 'react-dom';
 
 import API from '../api';
 
@@ -7,7 +6,7 @@ import PopupMovie from '../popups/movie';
 
 class List extends React.Component {
 
-    constructor({ data, featured=false, className="", popup }) {
+    constructor({ data, featured=false, className="" }) {
         super()
         this.ref = React.createRef();
         this.state = {
@@ -16,7 +15,6 @@ class List extends React.Component {
             featured,
             api: new API(),
             parentClass: className,
-            popup,
             isScrolling: false, clientX: 0
         }
     }
@@ -70,7 +68,8 @@ class List extends React.Component {
                 y = pos.top;
 
             var data = await this.state.api.getMovie(e.target.dataset.id)
-            this.state.popup({x, y, data})
+            // this.state.popup({ x, y, data })
+            new PopupMovie({x, y, data})
         }, 250);
         this.setState({wait})
     }
@@ -117,7 +116,10 @@ class List extends React.Component {
                 <div className={["movie", this.state.parentClass].join(" ")}>
                     <img src={e.backdrop} alt="featured film" />
                     <div className="liniar-gradient"></div>
-                    <h2>{e.title}</h2>
+                    <div className="info">
+                        <h2>{e.title}</h2>
+                        <button>Play</button>
+                    </div>
                     {multiple ? (
                         <div className="slider">
                             <div className="left" onClick={this.back.bind(this)}><span className="material-icons">navigate_before</span></div>
@@ -129,16 +131,14 @@ class List extends React.Component {
         } else if (this.state.featured == false) {
             var multiple = false
 
-            if (this.state.list.length > 10) {
-                multiple = true
-            }
+            if (this.state.list.length > 10) multiple = true
 
             return (
                 <div ref={this.ref} className={["list", this.state.parentClass].join(" ")} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDrag.bind(this)} onMouseUp={this.onMouseUp.bind(this)}>
                     {(this.state.list) ? this.state.list.map((v, i) => {
                         return (
                             <div className="movie" data-id={v.id} key={i} onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.onLeave.bind(this)}>
-                                <img src={v.backdrop} alt="" />
+                                <img src={v.backdrop.toString()} alt="Movie about things" />
                             </div>
                         )
                     }) : ""}
