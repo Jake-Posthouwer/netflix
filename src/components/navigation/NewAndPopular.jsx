@@ -1,28 +1,53 @@
 import React from 'react';
+import List from '../util/list';
+import API from '../api';
 
-const NewAndPopular = () => {
-    return (
-        <div className="container">
-            <div className="left">
-                <h4>new and popular</h4>
-                <div className="left">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis nesciunt
-                        obcaecati saepe corporis vel voluptatum eum quae amet, deserunt dolorem deleniti
-                        debitis animi provident quas dolor commodi perspiciatis sit excepturi, eveniet
-                        ipsa maiores aspernatur velit necessitatibus. Voluptates eius minima voluptas
-                        aspernatur! Exercitationem corrupti delectus tenetur eos velit adipisci, illum
-                        perferendis laboriosam quidem voluptatibus, ipsa autem, voluptatem nulla error
-                        dolores ullam. Molestiae eius accusamus modi impedit. Facilis cumque quaerat
-                        veniam quia totam, eaque mollitia possimus? Totam animi odit magni officia
-                        dolorem fuga. Debitis quis velit aliquid repellendus sapiente animi magni
-                        cupiditate minima quam molestiae officiis, odio, nisi deserunt atque? Et
-                        perspiciatis magni beatae nisi aspernatur dolores, corporis earum, rerum
-                        perferendis eius eum ad nemo provident maxime? Dolorum molestiae ducimus esse
-                        doloribus eum eveniet explicabo molestias omnis?</p>
-                </div>
+class NewAndPopular extends React.Component {
+    state = { genres: [], api: new API }
+    
+    constructor() {
+        super()
+        var api = this.state.api
+
+        // Populair movies
+        api.getMovies({
+            sort_by: "popularity.desc"
+        }).then((data) => {
+            this.state.genres.push({ title: "Popularity", data })
+            this.forceUpdate()
+        })
+
+        api.getMovies({
+            sort_by: "primary_release_date.desc"
+        }).then((data) => {
+            this.state.genres.push({ title: "New", data })
+            this.forceUpdate()
+        })
+
+        api.getMovies({
+            sort_by: "revenue.desc"
+        }).then((data) => {
+            this.state.genres.push({ title: "Revenue", data })
+            this.forceUpdate()
+        })
+    }
+
+    render() {
+        return (
+            <div style={{marginTop: "100px"}}>
+                {
+                    this.state.genres.map((v, i) => {
+                        return (
+                            <div className="genre">
+                                <h5>{v.title}</h5>
+                                <List data={v.data} className="small" featured={false} api={this.state.api} />
+                            </div>
+                        )
+                    })
+                }
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default NewAndPopular;
