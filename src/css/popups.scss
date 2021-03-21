@@ -12,7 +12,7 @@
 
         width: 20vw;
         min-width: 350px;
-        height: 350px;
+        // height: 350px;
 
         z-index: 1000;
 
@@ -99,8 +99,8 @@
         & .categories {
             & * {
                 display: inline-block;
-                margin-right: 5px;
                 margin-top: 0;
+                margin-right: 5px;
 
                 &:not(:last-of-type)::after {
                     content: " · ";

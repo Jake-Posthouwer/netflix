@@ -65,10 +65,13 @@ class List extends React.Component {
 
             var x = boundingBox.left + scrollLeft - clientLeft,
                 y = boundingBox.top + scrollTop - clientTop,
-                data = await this.state.api.getMovie(e.target.dataset.id);
+                data = await this.state.api.getMovie(e.target.dataset.id),
+                width = window.screen.width;
+
+                console.log(window.screen.width);
             
-            if (screen.width >= 1600) {
-                x += screen.width / 100 * 2
+            if (width >= 1600) {
+                x += width / 100 * 2
             }
             
             new PopupMovie({x, y, data})
@@ -126,7 +129,7 @@ class List extends React.Component {
                             <span className="name">Play</span>
                         </button>
                         <button>
-                            <span className="material-icons playbtn">info</span>
+                            <span className="material-icons playbtn info-button">info_outline</span>
                             <span className="name">More Info</span>
                         </button>
                     </div>

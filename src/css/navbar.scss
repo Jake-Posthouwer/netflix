@@ -3,6 +3,10 @@
     //     margin-top: 10px;
     // }
 
+    &.scroll {
+        background-color: #141414;
+    }
+
     width: 100%;
     position: fixed;
     background: rgb(0, 0, 0);
@@ -21,6 +25,7 @@
     img {
         height: 50px;
         width: 150px;
+
         &:hover {
             cursor: pointer;
         }
@@ -63,6 +68,7 @@
 
         & li {
             line-height: 100%;
+
             &:not(:last-of-type) {
                 margin-right: 20px;
             }

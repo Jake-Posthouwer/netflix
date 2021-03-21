@@ -26,12 +26,6 @@
     }
 
     .info {
-
-        // background-color: green;
-        span {
-            vertical-align: middle;
-        }
-
         margin: 0;
         padding: 0;
         width: 50%;
@@ -41,6 +35,10 @@
         left: 100px;
         transform: translateY(-50%);
         display: inline-block;
+
+        span {
+            vertical-align: middle;
+        }
 
         h2 {
             letter-spacing: 5px;
@@ -71,9 +69,13 @@
                 backdrop-filter: blur(8px);
             }
 
-            span.playbtn {
+            .playbtn {
                 font-size: 40px;
                 display: inline-block;
+            }
+
+            .info-button {
+                transform: scale(0.8);
             }
 
             span.name {

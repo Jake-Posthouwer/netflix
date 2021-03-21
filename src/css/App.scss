@@ -14,7 +14,7 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
 }
 
 /* Track */
@@ -25,6 +25,7 @@ body {
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: rgb(110, 110, 110);
+    border-radius: 50px;
 }
 
 /* Handle on hover */
@@ -36,7 +37,7 @@ body {
     position: relative;
     width: 100%;
     height: 10%;
-    
+
     & button {
         position: relative;
         border: 0;
@@ -73,7 +74,7 @@ body {
 
 a {
     color: inherit !important;
-    font-weight: bold;
+    // font-weight: bold;
     text-decoration: none;
 }
 
