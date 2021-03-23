@@ -17,7 +17,7 @@ class API {
         "VERSION": 3
     }
 
-    build(url, type="movie", params={}, includeBase = true, lang = this.state.LANG) {
+    build(url, type = "movie", params = {}, includeBase = true, lang = this.state.LANG) {
         const param = {
             "api_key": this.state.KEY,
             "language": lang,
@@ -138,10 +138,22 @@ class API {
      * Get movies of certain type
      * @param {object} params Add any requested types
      * @see [here](https://developers.themoviedb.org/3/discover/movie-discover) for more information
-     * @returns 
+     * @returns {object}
      */
     async getMovies(params) {
         const response = await axios.get(this.build("movie", "discover", params))
+
+        return this.ajust(response.data.results)
+    }
+    
+    /**
+     * Get TV of certain type
+     * @param {object} params Add any requested types
+     * @see [here](https://developers.themoviedb.org/3/discover/tv-discover) for more information
+     * @returns {object}
+     */
+    async getTvs(params) {
+        const response = await axios.get(this.build("tv", "discover", params))
 
         return this.ajust(response.data.results)
     }
@@ -152,7 +164,7 @@ class API {
      * @param {int} amount Amount of movies that will be returned
      * @returns {array} Results array
      */
-    async getRandomMovies(amount=10) {
+    async getRandomMovies(amount = 10) {
         var data = [],
             min = 100,
             max = 700,
@@ -162,7 +174,7 @@ class API {
             var random = Math.round(Math.random() * (max - min + 1) + min)
 
             // * Make sure the movies aren't the same
-            while(accepted.includes(random)) {
+            while (accepted.includes(random)) {
                 random = Math.round(Math.random() * (max - min + 1) + min)
             }
 
@@ -207,15 +219,27 @@ class API {
     }
 
     /**
-     * Get the available genres
+     * Get the available genres for movies
      * @see [here](https://developers.themoviedb.org/3/genres/get-movie-list) for more information
      * @returns {array} Genres available
      */
-    async getGenres() {
+    async getMovieGenres() {
         const response = await axios.get(this.build("list", "genre/movie"))
 
         return response.data.genres
     }
+
+    /**
+     * Get the available genres for TV
+     * @see [here](https://developers.themoviedb.org/3/genres/get-tv-list) for more information
+     * @returns {array} Genres available
+     */
+    async getTVGenres() {
+        const response = await axios.get(this.build("list", "genre/tv"))
+
+        return response.data.genres
+    }
 }
+
  
 export default API;

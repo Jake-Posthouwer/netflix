@@ -44,7 +44,7 @@ class Home extends React.Component {
         var api = this.state.api
         var genreTitle = genre
 
-        api.getGenres().then((data) => {
+        api.getMovieGenres().then((data) => {
             for (let i = 0; i < data.length; i++) {
                 const genre = data[i];
                 if (genre.name == genreTitle) {
@@ -60,14 +60,14 @@ class Home extends React.Component {
         return (
             <div>
                 <div className="featured">
-                    <List data={this.state.featured} featured={true} api={this.state.api} />
+                    <List data={this.state.featured} featured={true} />
                 </div>
                 {
                     this.state.genres.map((v, i) => {
                         return (
                             <div className={(i == 0) ? "genre first" : "genre"} key={i.toString()}>
                                 <h5>{v.title}</h5>
-                                <List data={v.data} className="small" featured={false} api={this.state.api}/>
+                                <List data={v.data} className="small" featured={false}/>
                             </div>
                         )
                     })

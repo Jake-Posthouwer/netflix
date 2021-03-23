@@ -5,16 +5,32 @@ import reactDOM from 'react-dom';
 
 class List extends React.Component {
 
-    constructor({ data, featured=false, className="" }) {
+    constructor({ data, featured = false, className = "", filter = null }) {
         super()
+        var api = new API()
         this.ref = React.createRef();
+
         this.state = {
             list: data,
             i: 0,
             featured,
-            api: new API(),
+            api,
             parentClass: className,
             isScrolling: false, clientX: 0
+        }
+
+        if (filter !== null) {
+            // Enable filter with all options
+            api.getMovieGenres().then((data) => {
+                this.state.filter = {
+                    first: (typeof filter === "string") ? filter : "None",
+                    list: data
+                }
+            }).catch((err) => console.error(err))
+
+            setTimeout(() => {
+                this.forceUpdate()
+            }, 1000);
         }
     }
 
@@ -121,6 +137,7 @@ class List extends React.Component {
                 <div className={["movie", this.state.parentClass].join(" ")}>
                     <img src={e.backdrop} alt="featured film" />
                     <div className="liniar-gradient"></div>
+                    {(typeof this.state.filter === "object") ? <div className="genre"><h5>Genre: </h5><select name="filter"><option value="none">{this.state.filter.first}</option></select></div> : ""}
                     <div className="info">
                         <h2>{e.title}</h2>
                         <p>{e.overview}</p>

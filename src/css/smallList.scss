@@ -139,9 +139,10 @@
 .genre {
     overflow: hidden;
     position: relative;
+    z-index: 10;
 
     &.first {
-        margin-top: -10vh;
+        margin-top: -25vh;
         z-index: 10;
     }
 

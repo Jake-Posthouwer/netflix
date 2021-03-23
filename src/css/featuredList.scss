@@ -25,13 +25,34 @@
         z-index: 1;
     }
 
+    .genre {
+        position: absolute;
+        left: 100px;
+        top: 20%;
+        transform: translateY(-50%);
+
+        & h5 {
+            margin: 0;
+            padding: 0;
+        }
+
+        & select {
+            display: inline-block;
+            width: 100px;
+            height: auto;
+            background-color: black;
+            border: 1px solid white;
+            margin-left: 25px;
+        }
+    }
+
     .info {
         margin: 0;
         padding: 0;
         width: 50%;
 
         position: absolute;
-        top: 50%;
+        top: 45%;
         left: 100px;
         transform: translateY(-50%);
         display: inline-block;
