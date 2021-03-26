@@ -1,6 +1,6 @@
 import React from 'react';
-import List from '../util/list';
-import API from '../api';
+import List from '../builder/list';
+import API from '../util/api';
 
 class Home extends React.Component {
     state = {featured: [], genres: []}

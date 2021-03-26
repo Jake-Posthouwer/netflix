@@ -2,10 +2,11 @@ import React from "react";
 import './css/App.scss';
 import 'materialize-css/dist/css/materialize.min.css';
 import { BrowserRouter, Route } from 'react-router-dom';
-import firebase from 'firebase';
 
-import NavBar from './components/util/navbar';
-import Footer from './components/util/footer';
+import FireBase from './components/util/firebase';
+
+import NavBar from './components/builder/navbar';
+import Footer from './components/builder/footer';
 
 // Alle paginas
 import Home from './components/navigation/Home';
@@ -15,7 +16,7 @@ import MyList from './components/navigation/MyList';
 import NewAndPopular from './components/navigation/NewAndPopular';
 
 // ! Test API ! //
-import API from './components/api';
+import API from './components/util/api';
 
 class App extends React.Component {
     state = {}
@@ -26,6 +27,20 @@ class App extends React.Component {
         // ! Testing of API ! //
         const api = new API()
         this.setState({ api })
+
+        var firebase = new FireBase()
+
+        firebase.register("jakeposthouwer@gmail.com", "123")
+
+        // if (firebase.login("tazio2003@gmail.com", "123")) {
+        //     console.log("Logged in!");
+        // } else {
+        //     console.log("Wrong password");
+        // }
+
+        firebase.getUser(0).then((v) => {
+            console.log(v);
+        })
     }
 
     render() {
@@ -33,7 +48,7 @@ class App extends React.Component {
             <BrowserRouter>
                 <div className="App-content">
                     <NavBar />
-                    <Route path='/' component={Home} exact/>
+                    <Route path='/browse' component={Home} exact/>
                     <Route path='/series' component={Series} />
                     <Route path='/films' component={Films} />
                     <Route path='/newandpopular' component={NewAndPopular} />

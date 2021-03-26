@@ -1,5 +1,5 @@
 import React from 'react';
-import API from '../api';
+import API from '../util/api';
 import PopupMovie from '../popups/movie';
 import reactDOM from 'react-dom';
 
