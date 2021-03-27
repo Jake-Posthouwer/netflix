@@ -17,6 +17,7 @@ import NewAndPopular from './components/navigation/NewAndPopular';
 
 // ! Test API ! //
 import API from './components/util/api';
+import User from "./components/util/user";
 
 class App extends React.Component {
     state = {}
@@ -30,17 +31,14 @@ class App extends React.Component {
 
         var firebase = new FireBase()
 
-        firebase.register("jakeposthouwer@gmail.com", "123")
+        // firebase.logout()
+        // var res = firebase.register("jakeposthouwer@gmail.com", "test123")
+        firebase.login("jakeposthouwer@gmail.com", "test123")
 
-        // if (firebase.login("tazio2003@gmail.com", "123")) {
-        //     console.log("Logged in!");
-        // } else {
-        //     console.log("Wrong password");
-        // }
-
-        firebase.getUser(0).then((v) => {
-            console.log(v);
-        })
+        setTimeout(() => {
+            var user = new User()
+            console.log(user.get());
+        }, 1000);
     }
 
     render() {

@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage';
 
 import Cookies from 'universal-cookie';
 import Crypt from './crypt';
@@ -18,9 +19,10 @@ var config = {
 firebase.initializeApp(config);
 
 class FireBase {
-    constructor(userID) {
+    constructor(userID=null) {
         var db = firebase.firestore()
         var auth = firebase.auth()
+        var storage = firebase.storage().ref()
         var loggedin = false
 
         const cookies = new Cookies(document.cookie);
@@ -36,6 +38,7 @@ class FireBase {
         this.state = {
             db,
             auth,
+            storage,
             userID,
             loggedin: loggedin || false,
             collection: {
@@ -45,6 +48,7 @@ class FireBase {
     }
 
     async login(email, password) {
+        if (!email || !password) return false
         if (this.state.loggedin) return true
 
         var auth = this.state.auth
@@ -61,11 +65,21 @@ class FireBase {
     }
 
     async register(email, password) {
+        if (!email || !password) return false
         if (this.state.loggedin) return true
         var auth = this.state.auth
 
+        try {
+            await auth.createUserWithEmailAndPassword(email, password)
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+
         var response = await auth.createUserWithEmailAndPassword(email, password)
+
         this.state.userID = response.user.uid
+        this.state.loggedin = true
 
         const cookies = new Cookies(document.cookie);
         const crypt = new Crypt();
@@ -79,9 +93,21 @@ class FireBase {
         if (!this.state.loggedin) return false
 
         var auth = this.state.auth
-        var response = await auth.signOut()
+        await auth.signOut()
+
+        const cookies = new Cookies(document.cookie);
+        cookies.remove("uid");
 
         return true
+    }
+
+    async getImage(str, type = ".png") {
+        if (!str) return false;
+        var storage = this.state.storage
+
+        var imgRef = storage.child(str + type)
+
+        return await imgRef.getDownloadURL()
     }
 
     async getUsers() {
@@ -91,6 +117,7 @@ class FireBase {
     }
 
     async getUser(name) {
+        if (!name) return false
         var users = await this.getUsers()
 
         if (typeof name !== "string" && typeof name !== "number") return console.log("This is a none recognized type of user");

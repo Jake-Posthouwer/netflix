@@ -1,5 +1,5 @@
 import React from 'react';
-import { link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import logo from '../../img/Netflix.svg';
 
@@ -7,10 +7,10 @@ class NavBar extends React.Component {
     render() {
         return (
             <nav className="nav-wrapper valign-wrapper">
-                <NavLink to="/" className="left"><img src={logo} alt="netflix logo"/></NavLink>
+                <NavLink to="/browse" className="left"><img src={logo} alt="netflix logo"/></NavLink>
                 
                 <ul className="nav-bar">
-                    <li><NavLink to="/">Home</NavLink></li>
+                    <li><NavLink to="/browse">Home</NavLink></li>
                     <li><NavLink to="/series">Series</NavLink></li>
                     <li><NavLink to="/films">Films</NavLink></li>
                     <li><NavLink to="/newandpopular">New &#38; popular</NavLink></li>
@@ -38,9 +38,9 @@ class NavBar extends React.Component {
         var scrolled = document.querySelector(".App-content").scrollTop
 
         if (scrolled > 20) {
-            document.querySelector(".nav-wrapper").className = "nav-wrapper valign-wrapper scroll";
+            document.querySelector(".nav-wrapper").classList.add("scroll");
         } else {
-            document.querySelector(".nav-wrapper").className = "nav-wrapper valign-wrapper";
+            document.querySelector(".nav-wrapper").classList.remove("scroll");
         }
     };
 }
