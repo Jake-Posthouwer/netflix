@@ -5,7 +5,7 @@ import reactDOM from 'react-dom';
 
 class List extends React.Component {
 
-    constructor({ data, featured = false, className = "", filter = null }) {
+    constructor({ data, featured = false, className = "", filter = null, movieType = true, slider = true, history, onSelectClick=null }) {
         super()
         var api = new API()
         this.ref = React.createRef();
@@ -16,12 +16,18 @@ class List extends React.Component {
             featured,
             api,
             parentClass: className,
+            movieType,
+            history,
+            slider,
+            filter: null,
+            onSelectClick,
             isScrolling: false, clientX: 0
         }
 
-        if (filter !== null) {
+        if (filter != null) {
             // Enable filter with all options
-            api.getMovieGenres().then((data) => {
+            var e = (movieType) ? "getMovieGenres" : "getTVGenres"
+            api[e]().then((data) => {
                 this.state.filter = {
                     first: (typeof filter === "string") ? filter : "None",
                     list: data
@@ -65,14 +71,22 @@ class List extends React.Component {
                 behavior: "smooth"
             })
         }
+    }
 
+    async onFilter(e) {
+        console.log(this);
+        var target = e.target,
+            selection = target.selectedIndex,
+            active = target[selection].value
+        await this.state.onSelectClick({ title: active, raw: e})
     }
 
     onHover(e) {
         var wait = setTimeout(async () => {
             var el = e.target,
                 doc = document.getElementsByClassName("App-content")[0],
-                boundingBox = el.getBoundingClientRect();
+                boundingBox = el.getBoundingClientRect(),
+                search = (el.dataset.movie == true) ? "getMovie" : "getTV"
 
             var clientTop = doc.clientTop || document.body.clientTop || 0,
                 clientLeft = doc.clientLeft || document.body.clientLeft || 0,
@@ -81,10 +95,8 @@ class List extends React.Component {
 
             var x = boundingBox.left + scrollLeft - clientLeft,
                 y = boundingBox.top + scrollTop - clientTop,
-                data = await this.state.api.getMovie(e.target.dataset.id),
+                data = await this.state.api[search](e.target.dataset.id),
                 width = window.screen.width;
-
-                console.log(window.screen.width);
             
             if (width >= 1600) {
                 x += width / 100 * 2
@@ -133,11 +145,23 @@ class List extends React.Component {
             if (this.state.list.length > 1) {
                 multiple = true
             }
+
             return (
                 <div className={["movie", this.state.parentClass].join(" ")}>
                     <img src={e.backdrop} alt="featured film" />
                     <div className="liniar-gradient"></div>
-                    {(typeof this.state.filter === "object") ? <div className="genre"><h5>Genre: </h5><select name="filter"><option value="none">{this.state.filter.first}</option></select></div> : ""}
+                    {(this.state.filter) ?
+                        <div className="genre">
+                            <h5>Series </h5>
+                            <select name="filter" onChange={this.onFilter.bind(this)}>
+                                <option defaultValue="none" selected>
+                                    {this.state.filter.first}
+                                </option>
+                                {this.state.filter.list.map((v, i) => {
+                                    return (<option key={i} defaultValue={v.id}>{v.name}</option>)
+                                })}
+                            </select>
+                        </div> : ""}
                     <div className="info">
                         <h2>{e.title}</h2>
                         <p>{e.overview}</p>
@@ -161,13 +185,16 @@ class List extends React.Component {
         } else if (this.state.featured == false) {
             var multiple = false
 
-            if (this.state.list.length > 10) multiple = true
+            if (this.state.list == null || this.state.list.length == 0) return ""
+
+            if (this.state.list.length > 10 && this.state.slider) multiple = true
 
             return (
                 <div ref={this.ref} className={["list", this.state.parentClass].join(" ")} onMouseDown={this.onMouseDown.bind(this)} onMouseMove={this.onMouseDrag.bind(this)} onMouseUp={this.onMouseUp.bind(this)}>
+                    {(this.state.history) ? <h5>{this.state.history.map((v) => v[0].toUpperCase() + v.substring(1)).join(" > ")}</h5> : ""}
                     {(this.state.list) ? this.state.list.map((v, i) => {
                         return (
-                            <div className="movie" data-id={v.id} key={i} onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.onLeave.bind(this)}>
+                            <div className="movie" data-movie={this.state.movieType} data-id={v.id} key={i} onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.onLeave.bind(this)}>
                                 <img src={v.backdrop || "./img/no-cover.jpg"} alt="Movie about things" />
                             </div>
                         )

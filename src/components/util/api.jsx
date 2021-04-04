@@ -70,6 +70,9 @@ class API {
                 delete: false,
                 items: ["vote_average", "vote_count"],
                 to: ["average", "count"]
+            },
+            "name": {
+                replace: "title"
             }
         }
         
@@ -78,25 +81,28 @@ class API {
 
             for (const key in change) {
                 const obj = change[key]
-                if (obj.replace) {
-                    items[i][obj.replace] = (obj.img) ? this.getImage(data[key]) : data[key]
-                }
-
-                if (obj.object == true) {
-                    var o = {}
-
-                    for (let j = 0; j < obj.items.length; j++) {
-                        const item = obj.items[j];
-                        var name = obj.to[j] || obj.items[j];
-                        o[name] = items[i][item] || null
-                        delete items[i][item]
+                
+                if (items[i].hasOwnProperty(key) || obj.items != null) {
+                    if (obj.replace) {
+                        items[i][obj.replace] = (obj.img) ? this.getImage(data[key]) : data[key]
                     }
 
-                    items[i][key] = o
-                }
+                    if (obj.object == true) {
+                        var o = {}
 
-                if (obj.delete == null || obj.delete == true) {
-                    delete items[i][key]
+                        for (let j = 0; j < obj.items.length; j++) {
+                            const item = obj.items[j];
+                            var name = obj.to[j] || obj.items[j];
+                            o[name] = items[i][item] || null
+                            delete items[i][item]
+                        }
+
+                        items[i][key] = o
+                    }
+
+                    if (obj.delete == null || obj.delete == true) {
+                        delete items[i][key]
+                    }
                 }
             }
         }
@@ -126,6 +132,20 @@ class API {
      */
     async getMovie(id) {
         const response = await axios.get(this.build(id))
+
+        var data = response.data
+
+        if (data.success == false) return false
+
+        return this.ajust(data)
+    }
+    /**
+     * Get a certain TV
+     * @param {string} id The ID of the tv
+     * @returns {object} Result object
+     */
+    async getTV(id) {
+        const response = await axios.get(this.build(id, "tv"))
 
         var data = response.data
 

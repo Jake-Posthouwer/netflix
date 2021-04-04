@@ -3,6 +3,17 @@
     display: flex;
     overflow-x: scroll;
 
+    &.search {
+        margin-top: 10%;
+        padding-right: calc(100px - 7px);
+        display: inline-block;
+
+        &>div {
+            width: 20%;
+            float: left;
+        }
+    }
+
     &::-webkit-scrollbar {
         display: none;
     }

@@ -1,7 +1,7 @@
 import React from "react";
 import './css/App.scss';
 import 'materialize-css/dist/css/materialize.min.css';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 
 import FireBase from './components/util/firebase';
 
@@ -36,8 +36,9 @@ class App extends React.Component {
         firebase.login("jakeposthouwer@gmail.com", "test123")
 
         setTimeout(() => {
-            var user = new User()
-            console.log(user.get());
+            if (firebase.state.loggedin == true && window.location.pathname == "/") {
+                window.location = "/browse"
+            }
         }, 1000);
     }
 
@@ -46,7 +47,7 @@ class App extends React.Component {
             <BrowserRouter>
                 <div className="App-content">
                     <NavBar />
-                    <Route path='/browse' component={Home} exact/>
+                    <Route path='/browse' component={Home}/>
                     <Route path='/series' component={Series} />
                     <Route path='/films' component={Films} />
                     <Route path='/newandpopular' component={NewAndPopular} />
