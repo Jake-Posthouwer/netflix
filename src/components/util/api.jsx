@@ -1,6 +1,7 @@
 /**
  * @file
  * API connection with "The Movie Database"
+ * Made by Tazio
  */
 
 
@@ -179,7 +180,7 @@ class API {
     }
 
     /**
-     * Get random movies
+     * ! Get random movies !
      * @deprecated
      * @param {int} amount Amount of movies that will be returned
      * @returns {array} Results array
@@ -215,6 +216,13 @@ class API {
         return response.data.results
     }
 
+    /**
+     * Get a trailer of a movie
+     * @param {int} id 
+     * @param {string} type youtube | vimeo
+     * @see [here](https://developers.themoviedb.org/3/movies/get-movie-videos) for more information
+     * @returns Video Data
+     */
     async getTrailer(id, type = "youtube") {
         const response = await axios.get(this.build("videos", `movie/${id}`)),
             data = response.data.results;

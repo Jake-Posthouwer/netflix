@@ -33,13 +33,10 @@ class List extends React.Component {
                     list: data
                 }
             }).catch((err) => console.error(err))
-
-            setTimeout(() => {
-                this.forceUpdate()
-            }, 1000);
         }
     }
 
+    // * Arrow scroll * //
     back() {
         this.state.i--
         if (0 > this.state.i) this.state.i = this.state.list.length-1
@@ -73,20 +70,21 @@ class List extends React.Component {
         }
     }
 
+    // * Series/movies filter * //
     async onFilter(e) {
-        console.log(this);
         var target = e.target,
             selection = target.selectedIndex,
             active = target[selection].value
         await this.state.onSelectClick({ title: active, raw: e})
     }
 
+    // * Hover Movie * //
     onHover(e) {
         var wait = setTimeout(async () => {
             var el = e.target,
                 doc = document.getElementsByClassName("App-content")[0],
                 boundingBox = el.getBoundingClientRect(),
-                search = (el.dataset.movie == true) ? "getMovie" : "getTV"
+                search = (el.dataset.movie == "true") ? "getMovie" : "getTV"
 
             var clientTop = doc.clientTop || document.body.clientTop || 0,
                 clientLeft = doc.clientLeft || document.body.clientLeft || 0,
@@ -136,6 +134,7 @@ class List extends React.Component {
         }
     }
 
+    // * Render * //
     render() {
         if (this.state.featured == true) {
             var e = this.state.list[this.state.i]

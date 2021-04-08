@@ -14,9 +14,9 @@ class Home extends React.Component {
         this.featuredMovies([530915])
         this.getGenres(["Horror", "Action", "War", "Animation"])
 
-        setTimeout(() => {
-            this.forceUpdate()
-        }, 1000);
+        // setTimeout(() => {
+        //     this.forceUpdate()
+        // }, 1000);
     }
 
     featuredMovies(movies) {
@@ -67,7 +67,7 @@ class Home extends React.Component {
                         return (
                             <div className={(i == 0) ? "genre first" : "genre"} key={i.toString()}>
                                 <h5>{v.title}</h5>
-                                <List data={v.data} className="small" featured={false}/>
+                                <List data={v.data} movieType={true} className="small" featured={false}/>
                             </div>
                         )
                     })
